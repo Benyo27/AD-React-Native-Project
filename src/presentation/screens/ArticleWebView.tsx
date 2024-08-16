@@ -2,13 +2,13 @@ import { RouteProp } from "@react-navigation/native";
 import WebView from "react-native-webview";
 import { RootStackParamList } from "../../../navigationTypes";
 
-type WebViewScreenRouteProps = RouteProp<RootStackParamList, 'WebView'>;
+type ArticleWebViewRouteProps = RouteProp<RootStackParamList, 'WebView'>;
 
-interface WebViewScreenProps {
-  route: WebViewScreenRouteProps;
+interface ArticleWebViewProps {
+  route: ArticleWebViewRouteProps;
 }
 
-export function WebViewScreen({ route }: WebViewScreenProps) {
+export default function ArticleWebView({ route }: ArticleWebViewProps) {
   const { url } = route.params;
   return (
     <WebView

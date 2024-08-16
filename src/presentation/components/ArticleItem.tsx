@@ -13,7 +13,7 @@ interface ArticleItemProps {
     }
 }
 
-export function ArticleItem({ article }: ArticleItemProps) {
+export default function ArticleItem({ article }: ArticleItemProps) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handlePress = () => {

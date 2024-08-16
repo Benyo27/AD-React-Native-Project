@@ -1,8 +1,8 @@
 import { FlatList, RefreshControl } from "react-native";
-import { ArticleItem } from "../ArticleItem";
+import ArticleItem from "../components/ArticleItem";
 import { useEffect, useState } from "react";
 
-export function ArticlesContainer() {
+export default function Articles() {
   const [articles, setArticles] = useState([]);
 
   const getArticles = async () => {
