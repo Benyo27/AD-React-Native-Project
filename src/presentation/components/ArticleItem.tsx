@@ -1,6 +1,6 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../../../navigationTypes";
+import { RootStackParamList } from "../../navigators/navigationTypes";
 
 interface ArticleItemProps {
     article: {
