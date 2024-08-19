@@ -1,22 +1,22 @@
 import { FlatList, RefreshControl } from "react-native";
-import ArticleItem from "../components/ArticleItem";
 import { useEffect, useState } from "react";
+import ArticleItem from "../components/ArticleItem";
+import { getArticles } from "../../domain/entities/articles";
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
 
-  const getArticles = async () => {
+  const fetchArticles = async () => {
     try {
-      const response = await fetch('https://hn.algolia.com/api/v1/search_by_date?query=mobile');
-      const data = await response.json();
-      setArticles(data.hits);
+      const articles = await getArticles();
+      setArticles(articles);
     } catch (error) {
-      console.error(error);
+      console.error(`Error fetching articles: ${error}`);
     }
   }
 
   useEffect(() => {
-    getArticles();
+    fetchArticles();
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export default function Articles() {
       refreshControl={
         <RefreshControl
           refreshing={false}
-          onRefresh={getArticles}
+          onRefresh={fetchArticles}
         />
       }
     />
