@@ -1,5 +1,5 @@
 import { ARTICLES_API_URL } from "../utils/api";
-import articlesToCamelCase from "../utils/articlesToCamelCase";
+import formatApiArticleProps from "../utils/formatApiArticleProps";
 
 export async function getArticles() {
   try {
@@ -9,7 +9,7 @@ export async function getArticles() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    return data.hits.map(articlesToCamelCase);
+    return data.hits.map(formatApiArticleProps);
   } catch (error) {
     throw new Error(`Error fetching articles: ${error}`);
   }
