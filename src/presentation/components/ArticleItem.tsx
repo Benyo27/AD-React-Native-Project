@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Pressable, Text, StyleSheet, Animated, View } from "react-native";
+import { Pressable, Text, StyleSheet, Animated } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 import { RootStackParamList } from "../../navigators/navigationTypes";
@@ -12,7 +12,7 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
   const handlePress = () => {
     const url = article.url || article.story_url;
     if (url) {
-      navigation.navigate('WebView', { url });
+      navigation.navigate("WebView", { url });
     }
   };
 
@@ -25,17 +25,19 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
 
   const renderRightActions = (
     _progress: any,
-    dragX: Animated.AnimatedInterpolation<number>
+    dragX: Animated.AnimatedInterpolation<number>,
   ) => {
     const translateX = dragX.interpolate({
       inputRange: [-100, 0],
       outputRange: [0, 100],
-      extrapolate: 'clamp',
+      extrapolate: "clamp",
     });
 
     return (
       <Pressable onPress={handleDelete}>
-        <Animated.View style={[styles.deleteButton, { transform: [{ translateX }] }]}>
+        <Animated.View
+          style={[styles.deleteButton, { transform: [{ translateX }] }]}
+        >
           <Text style={styles.deleteText}>Delete</Text>
         </Animated.View>
       </Pressable>
@@ -50,7 +52,9 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     >
       <Pressable onPress={handlePress}>
         <Text style={styles.title}>{article.title || article.story_title}</Text>
-        <Text style={styles.subtitle}>{`${article.author} - ${article.created_at}`}</Text>
+        <Text
+          style={styles.subtitle}
+        >{`${article.author} - ${article.created_at}`}</Text>
       </Pressable>
     </Swipeable>
   );
@@ -59,27 +63,27 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     paddingVertical: 24,
     paddingHorizontal: 16,
-    flexDirection: 'column',
+    flexDirection: "column",
     gap: 8,
   },
   title: {
     fontSize: 16,
   },
   subtitle: {
-    color: '#666',
+    color: "#666",
   },
   deleteButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
     width: 100,
-    height: '100%',
+    height: "100%",
   },
   deleteText: {
-    color: 'white',
+    color: "white",
     fontSize: 15,
   },
 });

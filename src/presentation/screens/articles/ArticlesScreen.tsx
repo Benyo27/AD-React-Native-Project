@@ -8,12 +8,11 @@ export default function Articles() {
   return (
     <FlatList
       data={articles}
-      renderItem={({ item }) => <ArticleItem article={item} onDelete={deleteArticle} />}
+      renderItem={({ item }) => (
+        <ArticleItem article={item} onDelete={deleteArticle} />
+      )}
       refreshControl={
-        <RefreshControl
-          refreshing={false}
-          onRefresh={onRefresh}
-        />
+        <RefreshControl refreshing={false} onRefresh={onRefresh} />
       }
     />
   );

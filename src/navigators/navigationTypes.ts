@@ -1,4 +1,4 @@
 export type RootStackParamList = {
-    Articles: undefined;
-    WebView: { url: string };
+  Articles: undefined;
+  WebView: { url: string };
 };
