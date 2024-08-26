@@ -3,19 +3,7 @@ import { Pressable, Text, StyleSheet, Animated, View } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 import { RootStackParamList } from "../../navigators/navigationTypes";
-
-interface ArticleItemProps {
-    article: {
-        title?: string;
-        story_title?: string;
-        url?: string;
-        story_url?: string;
-        author: string;
-        created_at: string;
-        story_id: number;
-    }
-    onDelete: (id: number) => void;
-}
+import { ArticleItemProps } from "../../types/ArticlesTypes";
 
 export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
