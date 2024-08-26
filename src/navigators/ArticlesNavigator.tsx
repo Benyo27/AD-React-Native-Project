@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Articles from "../presentation/screens/articles/ArticlesScreen";
 import ArticleWebView from "../presentation/screens/ArticleWebView";
-import { RootStackParamList } from "./navigationTypes";
+import { RootStackParamList } from "./NavigationTypes";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

@@ -1,6 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import WebView from "react-native-webview";
-import { RootStackParamList } from "../../navigators/navigationTypes";
+import { RootStackParamList } from "../../navigators/NavigationTypes";
 
 type ArticleWebViewRouteProps = RouteProp<RootStackParamList, "WebView">;
 

@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Pressable, Text, StyleSheet, Animated } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
-import { RootStackParamList } from "../../navigators/navigationTypes";
+import { RootStackParamList } from "../../navigators/NavigationTypes";
 import { ArticleItemProps } from "../../types/ArticlesTypes";
 
 export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
