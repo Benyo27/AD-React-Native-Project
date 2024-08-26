@@ -1,19 +1,7 @@
 import { ARTICLES_API_URL } from "../utils/api";
-import { Article } from "../../types/ArticlesTypes";
+import articlesToCamelCase from "../utils/articlesToCamelCase";
 
-function toCamelCase(article: any): Article {
-  return {
-    title: article.title,
-    storyTitle: article.story_title,
-    url: article.url,
-    storyUrl: article.story_url,
-    author: article.author,
-    createdAt: article.created_at,
-    storyId: article.story_id,
-  };
-}
-
-export async function getArticles(): Promise<Article[]> {
+export async function getArticles() {
   try {
     const response = await fetch(ARTICLES_API_URL);
 
@@ -21,7 +9,7 @@ export async function getArticles(): Promise<Article[]> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    return data.hits.map(toCamelCase);
+    return data.hits.map(articlesToCamelCase);
   } catch (error) {
     throw new Error(`Error fetching articles: ${error}`);
   }
