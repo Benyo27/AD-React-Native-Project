@@ -1,11 +1,11 @@
 export interface Article {
   title?: string;
-  story_title?: string;
+  storyTitle?: string;
   url?: string;
-  story_url?: string;
+  storyUrl?: string;
   author: string;
-  created_at: string;
-  story_id: number;
+  createdAt: string;
+  storyId: number;
 }
 
 export interface ArticleItemProps {

@@ -10,7 +10,7 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
   const swipeableRef = useRef<Swipeable>(null);
 
   const handlePress = () => {
-    const url = article.url || article.story_url;
+    const url = article.url || article.storyUrl;
     if (url) {
       navigation.navigate("WebView", { url });
     }
@@ -20,7 +20,7 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     if (swipeableRef.current) {
       swipeableRef.current.close();
     }
-    onDelete(article.story_id);
+    onDelete(article.storyId);
   };
 
   const renderRightActions = (
@@ -51,10 +51,10 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
       containerStyle={styles.container}
     >
       <Pressable onPress={handlePress}>
-        <Text style={styles.title}>{article.title || article.story_title}</Text>
+        <Text style={styles.title}>{article.title || article.storyTitle}</Text>
         <Text
           style={styles.subtitle}
-        >{`${article.author} - ${article.created_at}`}</Text>
+        >{`${article.author} - ${article.createdAt}`}</Text>
       </Pressable>
     </Swipeable>
   );

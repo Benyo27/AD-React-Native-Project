@@ -25,7 +25,7 @@ const useArticlesViewModel = () => {
       const deletedArticles =
         await ArticlesRepository.loadDeletedArticlesFromStorage();
       const filteredArticles = storedArticles.filter(
-        (article: Article) => !deletedArticles.includes(article.story_id),
+        (article: Article) => !deletedArticles.includes(article.storyId),
       );
       setArticles(filteredArticles);
     } catch (error) {
@@ -33,14 +33,14 @@ const useArticlesViewModel = () => {
     }
   };
 
-  const deleteArticle = async (story_id: number) => {
+  const deleteArticle = async (storyId: number) => {
     try {
       const deletedArticles =
         await ArticlesRepository.loadDeletedArticlesFromStorage();
-      deletedArticles.push(story_id);
+      deletedArticles.push(storyId);
       await ArticlesRepository.saveDeletedArticlesToStorage(deletedArticles);
       const updatedArticles = articles.filter(
-        (article: Article) => article.story_id !== story_id,
+        (article: Article) => article.storyId !== storyId,
       );
       setArticles(updatedArticles);
     } catch (error) {
