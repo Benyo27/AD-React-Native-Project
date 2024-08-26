@@ -10,8 +10,7 @@ const ArticlesRepository = {
     try {
       return await getArticles();
     } catch (error) {
-      console.error(`Error fetching articles from API: ${error}`);
-      return [];
+      throw error;
     }
   },
 
@@ -22,7 +21,7 @@ const ArticlesRepository = {
         JSON.stringify(articles),
       );
     } catch (error) {
-      console.error(`Error saving articles to storage: ${error}`);
+      console.error(error);
     }
   },
 

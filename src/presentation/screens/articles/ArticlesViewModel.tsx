@@ -15,7 +15,7 @@ const useArticlesViewModel = () => {
       const articles = await ArticlesRepository.fetchArticlesFromApi();
       await ArticlesRepository.saveArticlesToStorage(articles);
     } catch (error) {
-      console.error(`Error updating articles: ${error}`);
+      console.error(error);
     }
   };
 
