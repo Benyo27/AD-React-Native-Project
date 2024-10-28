@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import ArticlesRepository from "../../../data/articles/ArticlesRepository";
 import { Article } from "../../../types/ArticlesTypes";
 
-const useArticlesViewModel = () => {
+export const useArticlesViewModel = () => {
   const [articles, setArticles] = useState<Article[]>([]);
 
   const onRefresh = useCallback(async () => {
@@ -24,8 +24,11 @@ const useArticlesViewModel = () => {
       const storedArticles = await ArticlesRepository.loadArticlesFromStorage();
       const deletedArticles =
         await ArticlesRepository.loadDeletedArticlesFromStorage();
+      const deletedIds = deletedArticles.map(
+        (article: Article) => article.storyId,
+      );
       const filteredArticles = storedArticles.filter(
-        (article: Article) => !deletedArticles.includes(article.storyId),
+        (article: Article) => !deletedIds.includes(article.storyId),
       );
       setArticles(filteredArticles);
     } catch (error) {
@@ -33,14 +36,14 @@ const useArticlesViewModel = () => {
     }
   };
 
-  const deleteArticle = async (storyId: number) => {
+  const deleteArticle = async (article: Article) => {
     try {
       const deletedArticles =
         await ArticlesRepository.loadDeletedArticlesFromStorage();
-      deletedArticles.push(storyId);
+      deletedArticles.push(article);
       await ArticlesRepository.saveDeletedArticlesToStorage(deletedArticles);
       const updatedArticles = articles.filter(
-        (article: Article) => article.storyId !== storyId,
+        (filter: Article) => filter.storyId !== article.storyId,
       );
       setArticles(updatedArticles);
     } catch (error) {
@@ -58,5 +61,3 @@ const useArticlesViewModel = () => {
     deleteArticle,
   };
 };
-
-export default useArticlesViewModel;

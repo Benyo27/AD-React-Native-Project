@@ -10,5 +10,5 @@ export interface Article {
 
 export interface ArticleItemProps {
   article: Article;
-  onDelete: (id: number) => void;
+  onDelete?: (id: number) => void;
 }

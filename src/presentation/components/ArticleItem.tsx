@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Pressable, Text, StyleSheet, Animated } from "react-native";
+import { Pressable, Text, StyleSheet, Animated, View } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 import { RootStackParamList } from "../../navigators/NavigationTypes";
@@ -20,7 +20,7 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     if (swipeableRef.current) {
       swipeableRef.current.close();
     }
-    onDelete(article.storyId);
+    onDelete?.(article.storyId);
   };
 
   const renderRightActions = (
@@ -44,19 +44,27 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     );
   };
 
-  return (
+  const ArticleContent = () => (
+    <Pressable onPress={handlePress}>
+      <Text style={styles.title}>{article.title || article.storyTitle}</Text>
+      <Text
+        style={styles.subtitle}
+      >{`${article.author} - ${article.createdAt}`}</Text>
+    </Pressable>
+  );
+
+  return onDelete ? (
     <Swipeable
       ref={swipeableRef}
       renderRightActions={renderRightActions}
       containerStyle={styles.container}
     >
-      <Pressable onPress={handlePress}>
-        <Text style={styles.title}>{article.title || article.storyTitle}</Text>
-        <Text
-          style={styles.subtitle}
-        >{`${article.author} - ${article.createdAt}`}</Text>
-      </Pressable>
+      <ArticleContent />
     </Swipeable>
+  ) : (
+    <View style={styles.container}>
+      <ArticleContent />
+    </View>
   );
 }
 

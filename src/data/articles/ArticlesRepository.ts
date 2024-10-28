@@ -5,16 +5,34 @@ import { Article } from "../../types/ArticlesTypes";
 const ARTICLES_STORAGE_KEY = "articles";
 const DELETED_ARTICLES_STORAGE_KEY = "deletedArticles";
 
-const ArticlesRepository = {
-  fetchArticlesFromApi: async () => {
+type StorageListener = () => void;
+
+class ArticlesRepository {
+  private static deletedArticlesListeners: StorageListener[] = [];
+
+  static subscribe(listener: StorageListener) {
+    this.deletedArticlesListeners.push(listener);
+  }
+
+  static unsubscribe(listener: StorageListener) {
+    this.deletedArticlesListeners = this.deletedArticlesListeners.filter(
+      (l) => l !== listener,
+    );
+  }
+
+  private static notifyDeletedArticlesListeners() {
+    this.deletedArticlesListeners.forEach((listener) => listener());
+  }
+
+  static async fetchArticlesFromApi() {
     try {
       return await getArticles();
     } catch (error) {
       throw error;
     }
-  },
+  }
 
-  saveArticlesToStorage: async (articles: Article[]): Promise<void> => {
+  static async saveArticlesToStorage(articles: Article[]): Promise<void> {
     try {
       await AsyncStorageController.setItem(
         ARTICLES_STORAGE_KEY,
@@ -23,9 +41,9 @@ const ArticlesRepository = {
     } catch (error) {
       console.error(error);
     }
-  },
+  }
 
-  loadArticlesFromStorage: async () => {
+  static async loadArticlesFromStorage() {
     try {
       const storedArticles =
         await AsyncStorageController.getItem(ARTICLES_STORAGE_KEY);
@@ -34,9 +52,9 @@ const ArticlesRepository = {
       console.error(`Error loading articles from storage: ${error}`);
       return [];
     }
-  },
+  }
 
-  loadDeletedArticlesFromStorage: async (): Promise<number[]> => {
+  static async loadDeletedArticlesFromStorage() {
     try {
       const deletedArticles = await AsyncStorageController.getItem(
         DELETED_ARTICLES_STORAGE_KEY,
@@ -46,20 +64,21 @@ const ArticlesRepository = {
       console.error(`Error loading deleted articles from storage: ${error}`);
       return [];
     }
-  },
+  }
 
-  saveDeletedArticlesToStorage: async (
-    deletedArticles: number[],
-  ): Promise<void> => {
+  static async saveDeletedArticlesToStorage(
+    deletedArticles: Article[],
+  ): Promise<void> {
     try {
       await AsyncStorageController.setItem(
         DELETED_ARTICLES_STORAGE_KEY,
         JSON.stringify(deletedArticles),
       );
+      this.notifyDeletedArticlesListeners(); // Notificar a los listeners después de guardar
     } catch (error) {
       console.error(`Error saving deleted articles to storage: ${error}`);
     }
-  },
-};
+  }
+}
 
 export default ArticlesRepository;

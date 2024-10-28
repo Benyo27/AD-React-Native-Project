@@ -1,5 +1,10 @@
-import ArticlesNavigator from "./src/navigators/ArticlesNavigator";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import TabNavigator from "./src/navigators/TabNavigator";
 
 export default function App() {
-  return <ArticlesNavigator />;
+  return (
+    <GestureHandlerRootView>
+      <TabNavigator />
+    </GestureHandlerRootView>
+  );
 }
