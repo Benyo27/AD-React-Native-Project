@@ -1,6 +1,6 @@
 import { FlatList, RefreshControl } from "react-native";
 import ArticleItem from "../../components/ArticleItem";
-import useArticlesViewModel from "./ArticlesViewModel";
+import useArticlesViewModel from "./useArticlesViewModel";
 
 export default function Articles() {
   const { articles, onRefresh, deleteArticle } = useArticlesViewModel();

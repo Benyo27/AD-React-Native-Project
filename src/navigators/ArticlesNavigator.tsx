@@ -9,7 +9,10 @@ const Stack = createStackNavigator<RootStackParamList>();
 export default function ArticlesNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Articles">
+      <Stack.Navigator
+        initialRouteName="Articles"
+        screenOptions={{ headerTitle: "" }}
+      >
         <Stack.Screen name="Articles" component={Articles} />
         <Stack.Screen name="WebView" component={ArticleWebView} />
       </Stack.Navigator>

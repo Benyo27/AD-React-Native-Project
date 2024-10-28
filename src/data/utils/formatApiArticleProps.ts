@@ -8,7 +8,9 @@ export default function formatApiArticleProps(article: any): Article {
     url: article.url,
     storyUrl: article.story_url,
     author: article.author,
-    createdAt: formatDistanceToNow(parseISO(article.created_at), { addSuffix: false }),
+    createdAt: formatDistanceToNow(parseISO(article.created_at), {
+      addSuffix: false,
+    }),
     storyId: article.story_id,
   };
 }

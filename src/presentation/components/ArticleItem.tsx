@@ -62,6 +62,7 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#ccc",
     paddingVertical: 24,

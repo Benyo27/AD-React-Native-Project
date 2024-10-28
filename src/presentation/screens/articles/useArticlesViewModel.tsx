@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ArticlesRepository from "../../../data/articles/ArticlesRepository";
 import { Article } from "../../../types/ArticlesTypes";
 
 const useArticlesViewModel = () => {
   const [articles, setArticles] = useState<Article[]>([]);
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
     await updateStorageArticles();
     await setUpArticles();
-  };
+  }, []);
 
   const updateStorageArticles = async () => {
     try {
@@ -50,7 +50,7 @@ const useArticlesViewModel = () => {
 
   useEffect(() => {
     onRefresh();
-  }, []);
+  }, [onRefresh]);
 
   return {
     articles,
