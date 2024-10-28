@@ -5,7 +5,13 @@ import { Swipeable } from "react-native-gesture-handler";
 import { RootStackParamList } from "../../navigators/NavigationTypes";
 import { ArticleItemProps } from "../../types/ArticlesTypes";
 
-export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
+export default function ArticleItem({
+  article,
+  onDelete,
+  deleteText,
+  onSave,
+  saveText,
+}: ArticleItemProps) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const swipeableRef = useRef<Swipeable>(null);
 
@@ -36,9 +42,43 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     return (
       <Pressable onPress={handleDelete}>
         <Animated.View
-          style={[styles.deleteButton, { transform: [{ translateX }] }]}
+          style={[styles.actionButton, { transform: [{ translateX }] }]}
         >
-          <Text style={styles.deleteText}>Delete</Text>
+          <Text style={styles.actionText}>
+            {deleteText ? deleteText : "Delete"}
+          </Text>
+        </Animated.View>
+      </Pressable>
+    );
+  };
+
+  const handleSave = () => {
+    if (swipeableRef.current) {
+      swipeableRef.current.close();
+    }
+    onSave?.(article.storyId);
+  };
+
+  const renderLeftActions = (
+    _progress: any,
+    dragX: Animated.AnimatedInterpolation<number>,
+  ) => {
+    const translateX = dragX.interpolate({
+      inputRange: [0, 100],
+      outputRange: [-100, 0],
+      extrapolate: "clamp",
+    });
+
+    return (
+      <Pressable onPress={handleSave}>
+        <Animated.View
+          style={[
+            styles.actionButton,
+            { transform: [{ translateX }] },
+            { backgroundColor: "green" },
+          ]}
+        >
+          <Text style={styles.actionText}>{saveText ? saveText : "Save"}</Text>
         </Animated.View>
       </Pressable>
     );
@@ -53,19 +93,46 @@ export default function ArticleItem({ article, onDelete }: ArticleItemProps) {
     </Pressable>
   );
 
-  return onDelete ? (
-    <Swipeable
-      ref={swipeableRef}
-      renderRightActions={renderRightActions}
-      containerStyle={styles.container}
-    >
-      <ArticleContent />
-    </Swipeable>
-  ) : (
-    <View style={styles.container}>
-      <ArticleContent />
-    </View>
-  );
+  if (onDelete && onSave) {
+    return (
+      <Swipeable
+        ref={swipeableRef}
+        renderRightActions={renderRightActions}
+        renderLeftActions={renderLeftActions}
+        containerStyle={styles.container}
+      >
+        <ArticleContent />
+      </Swipeable>
+    );
+  } else if (onDelete) {
+    return (
+      <Swipeable
+        ref={swipeableRef}
+        renderRightActions={renderRightActions}
+        renderLeftActions={() => <></>}
+        containerStyle={styles.container}
+      >
+        <ArticleContent />
+      </Swipeable>
+    );
+  } else if (onSave) {
+    return (
+      <Swipeable
+        ref={swipeableRef}
+        renderRightActions={() => <></>}
+        renderLeftActions={renderLeftActions}
+        containerStyle={styles.container}
+      >
+        <ArticleContent />
+      </Swipeable>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <ArticleContent />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -84,14 +151,14 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#666",
   },
-  deleteButton: {
+  actionButton: {
     backgroundColor: "red",
     justifyContent: "center",
     alignItems: "center",
     width: 100,
     height: "100%",
   },
-  deleteText: {
+  actionText: {
     color: "white",
     fontSize: 15,
   },

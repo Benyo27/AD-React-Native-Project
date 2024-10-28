@@ -2,37 +2,47 @@ import { useCallback, useEffect, useState } from "react";
 import { Article } from "../../../types/ArticlesTypes";
 import ArticlesRepository from "../../../data/articles/ArticlesRepository";
 
-export const useDeletedArticlesViewModel = () => {
+export const useSavedArticlesViewModel = () => {
   const [articles, setArticles] = useState<Article[]>([]);
 
   const setUpArticles = useCallback(async () => {
     try {
+      const savedArticles =
+        await ArticlesRepository.loadSavedArticlesFromStorage();
       const deletedArticles =
         await ArticlesRepository.loadDeletedArticlesFromStorage();
-      setArticles(deletedArticles);
+      const deletedIds = deletedArticles.map(
+        (article: Article) => article.storyId,
+      );
+      const filteredArticles = savedArticles.filter(
+        (article: Article) => !deletedIds.includes(article.storyId),
+      );
+      setArticles(filteredArticles);
     } catch (error) {
       console.error(`Error setting up articles: ${error}`);
     }
   }, []);
 
-  const undeleteArticle = async (article: Article) => {
+  const unsaveArticle = async (article: Article) => {
     try {
-      const deletedArticles =
-        await ArticlesRepository.loadDeletedArticlesFromStorage();
-      const updatedArticles = deletedArticles.filter(
+      const savedArticles =
+        await ArticlesRepository.loadSavedArticlesFromStorage();
+      const updatedArticles = savedArticles.filter(
         (filter: Article) => filter.storyId !== article.storyId,
       );
-      await ArticlesRepository.saveDeletedArticlesToStorage(updatedArticles);
+      await ArticlesRepository.saveSavedArticlesToStorage(updatedArticles);
       setArticles(updatedArticles);
     } catch (error) {
-      console.error(`Error undeleting article: ${error}`);
+      console.error(`Error unsaving article: ${error}`);
     }
   };
 
   useEffect(() => {
+    ArticlesRepository.subscribeToSavedArticles(setUpArticles);
     ArticlesRepository.subscribeToDeletedArticles(setUpArticles);
     setUpArticles();
     return () => {
+      ArticlesRepository.unsubscribeFromSavedArticles(setUpArticles);
       ArticlesRepository.unsubscribeFromDeletedArticles(setUpArticles);
     };
   }, [setUpArticles]);
@@ -40,6 +50,6 @@ export const useDeletedArticlesViewModel = () => {
   return {
     articles,
     onRefresh: setUpArticles,
-    undeleteArticle,
+    unsaveArticle,
   };
 };

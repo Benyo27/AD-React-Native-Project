@@ -27,8 +27,14 @@ export const useArticlesViewModel = () => {
       const deletedIds = deletedArticles.map(
         (article: Article) => article.storyId,
       );
-      const filteredArticles = storedArticles.filter(
+      const notDeletedArticles = storedArticles.filter(
         (article: Article) => !deletedIds.includes(article.storyId),
+      );
+      const savedArticles =
+        await ArticlesRepository.loadSavedArticlesFromStorage();
+      const savedIds = savedArticles.map((article: Article) => article.storyId);
+      const filteredArticles = notDeletedArticles.filter(
+        (article: Article) => !savedIds.includes(article.storyId),
       );
       setArticles(filteredArticles);
     } catch (error) {
@@ -51,13 +57,35 @@ export const useArticlesViewModel = () => {
     }
   };
 
+  const saveArticle = async (article: Article) => {
+    try {
+      const savedArticles =
+        await ArticlesRepository.loadSavedArticlesFromStorage();
+      savedArticles.push(article);
+      await ArticlesRepository.saveSavedArticlesToStorage(savedArticles);
+      const updatedArticles = articles.filter(
+        (filter: Article) => filter.storyId !== article.storyId,
+      );
+      setArticles(updatedArticles);
+    } catch (error) {
+      console.error(`Error saving article: ${error}`);
+    }
+  };
+
   useEffect(() => {
+    ArticlesRepository.subscribeToSavedArticles(onRefresh);
+    ArticlesRepository.subscribeToDeletedArticles(onRefresh);
     onRefresh();
+    return () => {
+      ArticlesRepository.unsubscribeFromSavedArticles(onRefresh);
+      ArticlesRepository.unsubscribeFromDeletedArticles(onRefresh);
+    };
   }, [onRefresh]);
 
   return {
     articles,
     onRefresh,
     deleteArticle,
+    saveArticle,
   };
 };

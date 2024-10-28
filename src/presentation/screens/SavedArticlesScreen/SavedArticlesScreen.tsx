@@ -1,10 +1,9 @@
 import { FlatList, RefreshControl, Text, View, StyleSheet } from "react-native";
 import ArticleItem from "../../components/ArticleItem";
-import { useDeletedArticlesViewModel } from "./useDeletedArticlesViewModel";
+import { useSavedArticlesViewModel } from "./useSavedArticlesViewModel";
 
-export function DeletedArticlesScreen() {
-  const { articles, onRefresh, undeleteArticle } =
-    useDeletedArticlesViewModel();
+export function SavedArticlesScreen() {
+  const { articles, onRefresh, unsaveArticle } = useSavedArticlesViewModel();
 
   return (
     <FlatList
@@ -14,8 +13,8 @@ export function DeletedArticlesScreen() {
       renderItem={({ item }) => (
         <ArticleItem
           article={item}
-          onDelete={() => undeleteArticle(item)}
-          deleteText="Undelete"
+          onSave={() => unsaveArticle(item)}
+          saveText="Unsave"
         />
       )}
       refreshControl={
@@ -23,7 +22,7 @@ export function DeletedArticlesScreen() {
       }
       ListEmptyComponent={() => (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No deleted articles</Text>
+          <Text style={styles.emptyText}>No saved articles</Text>
         </View>
       )}
     />
