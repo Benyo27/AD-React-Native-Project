@@ -2,7 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import ArticlesNavigator from "./ArticlesNavigator";
-// import { DeletedArticlesScreen } from "../presentation/screens/DeletedArticlesScreen";
 import DeletedArticlesNavigator from "./DeletedArticlesNavigator";
 
 const Tab = createBottomTabNavigator();

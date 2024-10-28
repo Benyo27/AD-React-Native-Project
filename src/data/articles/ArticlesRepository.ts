@@ -74,7 +74,7 @@ class ArticlesRepository {
         DELETED_ARTICLES_STORAGE_KEY,
         JSON.stringify(deletedArticles),
       );
-      this.notifyDeletedArticlesListeners(); // Notificar a los listeners después de guardar
+      this.notifyDeletedArticlesListeners();
     } catch (error) {
       console.error(`Error saving deleted articles to storage: ${error}`);
     }
