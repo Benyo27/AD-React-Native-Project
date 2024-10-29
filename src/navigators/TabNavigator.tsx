@@ -1,15 +1,21 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from "@react-navigation/native";
 import ArticlesNavigator from "./ArticlesNavigator";
 import SavedArticlesNavigator from "./SavedArticlesNavigator";
 import DeletedArticlesNavigator from "./DeletedArticlesNavigator";
+import { NotificationsScreen } from "../presentation/screens/NotificationsScreen";
 
 const Tab = createBottomTabNavigator();
 
+export const navigationRef = createNavigationContainerRef();
+
 export default function TabNavigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen name="Articles" component={ArticlesNavigator} />
         <Tab.Screen name="Saved Articles" component={SavedArticlesNavigator} />
@@ -17,6 +23,7 @@ export default function TabNavigator() {
           name="Deleted Articles"
           component={DeletedArticlesNavigator}
         />
+        <Tab.Screen name="Notifications" component={NotificationsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
